@@ -3,7 +3,12 @@ body {
   font-family:'Sofia Sans Extra Condensed', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-size: 18px;
+  font-size: 25px;
+}
+#root{
+  width: 96%;
+  max-width: 1600px;
+  margin: auto;
 }
 
 code {

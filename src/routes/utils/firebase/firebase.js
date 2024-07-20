@@ -1,9 +1,11 @@
 import { initializeApp } from "firebase/app";
+
 import {
   getAuth,
   signInWithRedirect,
   signInWithPopup,
   GoogleAuthProvider,
+  createUserWithEmailAndPassword
 } from "firebase/auth";
 
 // STEP 1 import these
@@ -37,7 +39,11 @@ export const signinWithGooglePopup = () => signInWithPopup(auth, provider);
 export const db = getFirestore();
 
 // STEP 5 Create a function to create document
-export const createUserDocumentFromAuth = async (userAuth) => {
+
+// USING THIS IN SIGNIN FORM
+export const createUserDocumentFromAuth = async (userAuth, dName) => {
+  if(!userAuth) return;
+
   const userDocRef = doc(db, "users", userAuth.uid); // doc take 3 argument database, collection and uniqe identifier
   console.log(userDocRef);
 
@@ -46,7 +52,7 @@ export const createUserDocumentFromAuth = async (userAuth) => {
   console.log(userSnapshot.exists()); //Returns whether or not the data exists. True if the document exists.
 
   if (!userSnapshot.exists()) {
-    const displayName = userAuth.displayName; // dispplayName and email we are getting when we are login from google.
+    const displayName = userAuth.displayName || dName; // dispplayName and email we are getting when we are login from google.
     const email = userAuth.email;
     const createDate = new Date();
 
@@ -60,3 +66,12 @@ export const createUserDocumentFromAuth = async (userAuth) => {
 
   return userDocRef
 };
+
+
+// USING IN SIGNUP FORM THIS FUNCTION TO AUTHENTICATE USER
+export const createAuthUserWithEmailAndPassword = async (email, password) => {
+
+  if(!email || !password) return;
+  return createUserWithEmailAndPassword(auth, email, password);
+
+}
