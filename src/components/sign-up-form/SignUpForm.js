@@ -1,10 +1,14 @@
 import { useState } from "react";
+import { useContext } from "react";
 import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from "../../routes/utils/firebase/firebase";
+import { UserContext } from "../../context/user.context";
 import FormInput from "../form-input/FormInput";
 import "./SignUpForm.scss"
 import Button from "../button/Button";
 
 function SignUpForm() {
+  const userCTX = useContext(UserContext);
+
   const defaultFormField = {
     displayName: "",
     email: "",
@@ -38,6 +42,8 @@ function SignUpForm() {
         password
       );
       let user = response.user;
+      
+      userCTX.setCurrentUser(user);
       console.log(user)
 
       createUserDocumentFromAuth(user, displayName)
